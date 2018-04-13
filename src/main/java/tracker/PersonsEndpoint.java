@@ -62,7 +62,7 @@ public class PersonsEndpoint {
 	public Response updatePersonById(@PathVariable("id") UUID personId, @RequestBody PersonDto dto) {
 		PersonEntity entity = mapper.toPersonEntity(dto);
 		entity.setId(personId);
-		dao.updatePerson(entity);
+		dao.update(entity);
 		return Response.status(Status.OK).entity(entity).build();
 	}
 }

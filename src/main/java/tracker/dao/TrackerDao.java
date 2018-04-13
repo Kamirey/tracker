@@ -11,8 +11,8 @@ import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import tracker.entity.AbstractEntity;
 import tracker.entity.PersonEntity;
-import tracker.entity.WeightRecordEntity;
 
 @Service @Primary
 @Transactional
@@ -22,22 +22,16 @@ public class TrackerDao {
 	@PersistenceContext
 	protected EntityManager entityManager;
 	
-	public void persist(PersonEntity entity) {
+	public void persist(AbstractEntity entity) {
 		entityManager.persist(entity);
 	}
 	
-	public void remove(PersonEntity entity) {
+	public void remove(AbstractEntity entity) {
 		entityManager.remove(entity);
 	}
 	
-	public PersonEntity getPersonById(UUID personId) {
-		TypedQuery<PersonEntity> query = entityManager.createQuery("SELECT p FROM PersonEntity p WHERE p.id=:personId", PersonEntity.class);
-		query.setParameter("personId", personId);
-		return query.getSingleResult();
-	}
-	
-	public void persist(WeightRecordEntity entity) {
-		entityManager.persist(entity);
+	public void update(AbstractEntity entity) {
+		entityManager.merge(entity);
 	}
 
 	public PersonEntity deletePerson(UUID personId) {
@@ -45,8 +39,10 @@ public class TrackerDao {
 		entityManager.remove(person);
 		return person;
 	}
-
-	public void updatePerson(PersonEntity entity) {
-		entityManager.merge(entity);
+	
+	public PersonEntity getPersonById(UUID personId) {
+		TypedQuery<PersonEntity> query = entityManager.createQuery("SELECT p FROM PersonEntity p WHERE p.id=:personId", PersonEntity.class);
+		query.setParameter("personId", personId);
+		return query.getSingleResult();
 	}
 }

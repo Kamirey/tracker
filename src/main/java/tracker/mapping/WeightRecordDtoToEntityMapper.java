@@ -13,6 +13,7 @@ public class WeightRecordDtoToEntityMapper {
 		return WeightRecordEntity.builder()
 			.timeStamp(dto.getTimeStamp())
 			.person(person)
+			.weightInKg(dto.getWeightInKg())
 			.build();
 	}
 }
