@@ -6,10 +6,10 @@ import java.util.UUID;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.Response.Status;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -35,43 +35,43 @@ public class PersonsEndpoint {
 	@RequestMapping(value="/", method=RequestMethod.POST)
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response addPerson(@RequestBody PersonDto dto) {
+	public ResponseEntity<PersonEntity> addPerson(@RequestBody PersonDto dto) {
 		PersonEntity entity = mapper.toPersonEntity(dto);
 		dao.persist(entity);
-		return Response.status(Status.CREATED).entity(entity).build();
+		return new ResponseEntity<>(entity, HttpStatus.CREATED);
 	}
 	
 	@RequestMapping(value="/", method=RequestMethod.GET)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getPersons() {
+	public ResponseEntity<ImmutableMap<String, List<PersonEntity>>> getPersons() {
 		List<PersonEntity> personEntities = dao.getPersons();
-		return Response.status(Status.OK).entity(ImmutableMap.of("results", personEntities)).build();
+		return new ResponseEntity<>(ImmutableMap.of("results", personEntities), HttpStatus.OK);
 	}
 	
 	@RequestMapping(value="/{id}", method=RequestMethod.GET)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getPersonById(@PathVariable("id") UUID personId) {
+	public ResponseEntity<PersonEntity> getPersonById(@PathVariable("id") UUID personId) {
 		PersonEntity personEntity = dao.getPersonById(personId);
-		return Response.status(Status.OK).entity(personEntity).build();
+		return new ResponseEntity<>(personEntity, HttpStatus.OK);
 	}
 	
 	@RequestMapping(value="/{id}", method=RequestMethod.DELETE)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response deletePersonById(@PathVariable("id") UUID personId) {
+	public ResponseEntity<PersonEntity> deletePersonById(@PathVariable("id") UUID personId) {
 		PersonEntity personEntity = dao.deletePerson(personId);
 		if (personEntity == null) {
-			return Response.status(Status.NOT_FOUND).build();
+			return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
 		}
-		return Response.status(Status.NO_CONTENT).build();
+		return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
 	}
 	
 	@RequestMapping(value="/{id}", method=RequestMethod.PUT)
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response updatePersonById(@PathVariable("id") UUID personId, @RequestBody PersonDto dto) {
+	public ResponseEntity<PersonEntity> updatePersonById(@PathVariable("id") UUID personId, @RequestBody PersonDto dto) {
 		PersonEntity entity = mapper.toPersonEntity(dto);
 		entity.setId(personId);
 		dao.update(entity);
-		return Response.status(Status.OK).entity(entity).build();
+		return new ResponseEntity<>(entity, HttpStatus.OK);
 	}
 }

@@ -5,10 +5,10 @@ import java.util.UUID;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.Response.Status;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,11 +34,10 @@ public class WeightRecordEndpoint {
 	@RequestMapping(value="/{personId}", method=RequestMethod.POST)
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response addWeightRecord(@PathVariable("personId") UUID personId, @RequestBody WeightRecordDto dto) {
+	public ResponseEntity<WeightRecordEntity> addWeightRecord(@PathVariable("personId") UUID personId, @RequestBody WeightRecordDto dto) {
 		PersonEntity person = dao.getPersonById(personId);
 		WeightRecordEntity entity = mapper.toWeightRecordEntity(dto, person);
 		dao.persist(entity);
-		return Response.status(Status.CREATED).entity(entity).build();
+		return new ResponseEntity<>(entity, HttpStatus.OK);
 	}
-
 }
