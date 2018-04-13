@@ -16,5 +16,5 @@ import lombok.ToString;
 @Builder
 public class WeightRecordDto {
 	@NonNull private Date timeStamp;
-	private int weightInKg;
+	private Integer weightInKg;
 }

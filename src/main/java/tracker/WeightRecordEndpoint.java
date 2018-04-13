@@ -36,7 +36,13 @@ public class WeightRecordEndpoint {
 	@Produces(MediaType.APPLICATION_JSON)
 	public ResponseEntity<WeightRecordEntity> addWeightRecord(@PathVariable("personId") UUID personId, @RequestBody WeightRecordDto dto) {
 		PersonEntity person = dao.getPersonById(personId);
+		if (person == null) {
+			return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+		}
 		WeightRecordEntity entity = mapper.toWeightRecordEntity(dto, person);
+		if (entity == null) {
+			return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+		}
 		dao.persist(entity);
 		return new ResponseEntity<>(entity, HttpStatus.OK);
 	}

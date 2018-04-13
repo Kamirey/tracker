@@ -37,6 +37,9 @@ public class TrackerDao {
 
 	public PersonEntity deletePerson(UUID personId) {
 		PersonEntity person = getPersonById(personId);
+		if (person == null) {
+			return null;
+		}
 		entityManager.remove(person);
 		return person;
 	}
@@ -44,7 +47,8 @@ public class TrackerDao {
 	public PersonEntity getPersonById(UUID personId) {
 		TypedQuery<PersonEntity> query = entityManager.createQuery("SELECT p FROM PersonEntity p WHERE p.id=:personId", PersonEntity.class);
 		query.setParameter("personId", personId);
-		return query.getSingleResult();
+		List<PersonEntity> resultList = query.getResultList();
+		return resultList.isEmpty() ? null : resultList.get(0);
 	}
 	
 	public List<PersonEntity> getPersons() {

@@ -37,6 +37,9 @@ public class PersonsEndpoint {
 	@Produces(MediaType.APPLICATION_JSON)
 	public ResponseEntity<PersonEntity> addPerson(@RequestBody PersonDto dto) {
 		PersonEntity entity = mapper.toPersonEntity(dto);
+		if (entity == null) {
+			return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+		}
 		dao.persist(entity);
 		return new ResponseEntity<>(entity, HttpStatus.CREATED);
 	}
@@ -52,6 +55,9 @@ public class PersonsEndpoint {
 	@Produces(MediaType.APPLICATION_JSON)
 	public ResponseEntity<PersonEntity> getPersonById(@PathVariable("id") UUID personId) {
 		PersonEntity personEntity = dao.getPersonById(personId);
+		if (personEntity == null) {
+			return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+		}
 		return new ResponseEntity<>(personEntity, HttpStatus.OK);
 	}
 	
@@ -70,6 +76,9 @@ public class PersonsEndpoint {
 	@Produces(MediaType.APPLICATION_JSON)
 	public ResponseEntity<PersonEntity> updatePersonById(@PathVariable("id") UUID personId, @RequestBody PersonDto dto) {
 		PersonEntity entity = mapper.toPersonEntity(dto);
+		if (entity == null) {
+			return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+		}
 		entity.setId(personId);
 		dao.update(entity);
 		return new ResponseEntity<>(entity, HttpStatus.OK);
