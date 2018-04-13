@@ -32,5 +32,4 @@ public abstract class AbstractEntity {
     @Column(name = "id", unique=true, nullable = false)
 	@Setter
 	private UUID id;
-
 }

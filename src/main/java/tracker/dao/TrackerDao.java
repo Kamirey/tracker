@@ -1,5 +1,6 @@
 package tracker.dao;
 
+import java.util.List;
 import java.util.UUID;
 
 import javax.persistence.EntityManager;
@@ -44,5 +45,10 @@ public class TrackerDao {
 		TypedQuery<PersonEntity> query = entityManager.createQuery("SELECT p FROM PersonEntity p WHERE p.id=:personId", PersonEntity.class);
 		query.setParameter("personId", personId);
 		return query.getSingleResult();
+	}
+	
+	public List<PersonEntity> getPersons() {
+		TypedQuery<PersonEntity> query = entityManager.createQuery("SELECT p FROM PersonEntity p", PersonEntity.class);
+		return query.getResultList();
 	}
 }

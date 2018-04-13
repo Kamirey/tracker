@@ -12,5 +12,4 @@ public class UuidGenerator implements IdentifierGenerator {
 	public Serializable generate(SessionImplementor session, Object object) throws HibernateException {
 		return UUID.randomUUID();
 	}
-
 }

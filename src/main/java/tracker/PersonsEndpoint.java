@@ -1,5 +1,6 @@
 package tracker;
 
+import java.util.List;
 import java.util.UUID;
 
 import javax.ws.rs.Consumes;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import jersey.repackaged.com.google.common.collect.ImmutableMap;
 import tracker.dao.TrackerDao;
 import tracker.dto.PersonDto;
 import tracker.entity.PersonEntity;
@@ -37,6 +39,13 @@ public class PersonsEndpoint {
 		PersonEntity entity = mapper.toPersonEntity(dto);
 		dao.persist(entity);
 		return Response.status(Status.CREATED).entity(entity).build();
+	}
+	
+	@RequestMapping(value="/", method=RequestMethod.GET)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getPersons() {
+		List<PersonEntity> personEntities = dao.getPersons();
+		return Response.status(Status.OK).entity(ImmutableMap.of("results", personEntities)).build();
 	}
 	
 	@RequestMapping(value="/{id}", method=RequestMethod.GET)
