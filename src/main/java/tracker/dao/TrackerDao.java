@@ -1,5 +1,6 @@
 package tracker.dao;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
@@ -14,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import tracker.entity.AbstractEntity;
 import tracker.entity.PersonEntity;
+import tracker.entity.WeightRecordEntity;
 
 @Service @Primary
 @Transactional
@@ -25,6 +27,12 @@ public class TrackerDao {
 	
 	public void persist(AbstractEntity entity) {
 		entityManager.persist(entity);
+	}
+	
+	public void persist(AbstractEntity... entities) {
+		Arrays.stream(entities).forEach(entity -> {
+			entityManager.persist(entity);
+		});
 	}
 	
 	public void remove(AbstractEntity entity) {
@@ -54,5 +62,22 @@ public class TrackerDao {
 	public List<PersonEntity> getPersons() {
 		TypedQuery<PersonEntity> query = entityManager.createQuery("SELECT p FROM PersonEntity p", PersonEntity.class);
 		return query.getResultList();
+	}
+
+	public List<WeightRecordEntity> getWeightRecordsForPerson(UUID personId) {
+		TypedQuery<WeightRecordEntity> query = entityManager.createQuery("SELECT w FROM WeightRecordEntity w WHERE w.person.id=:personId", WeightRecordEntity.class);
+		query.setParameter("personId", personId);
+		return query.getResultList();
+	}
+
+	public WeightRecordEntity deleteWeightRecord(UUID weightRecordId) {
+		TypedQuery<WeightRecordEntity> query = entityManager.createQuery("SELECT w FROM WeightRecordEntity w WHERE w.id=:weightRecordId", WeightRecordEntity.class);
+		query.setParameter("weightRecordId", weightRecordId);
+		List<WeightRecordEntity> resultList = query.getResultList();
+		if (resultList.isEmpty()) {
+			return null;
+		}
+		entityManager.remove(resultList.get(0));
+		return resultList.get(0);
 	}
 }

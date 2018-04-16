@@ -43,8 +43,7 @@ public class WeightRecordPostEndpointTest {
 		PersonEntity person1 = PersonEntity.builder().name("person 1").heightInCm(160).build();
 		PersonEntity person2 = PersonEntity.builder().name("person 2").heightInCm(180).build();
 		
-		daoForSetup.persist(person1);
-		daoForSetup.persist(person2);
+		daoForSetup.persist(person1, person2);
 	}
 	
 	@Test

@@ -3,6 +3,7 @@ package tracker;
 import static com.jayway.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
 
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -21,6 +22,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
 
 import tracker.dao.TrackerDao;
 import tracker.entity.PersonEntity;
+import tracker.entity.WeightRecordEntity;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = TrackerApplication.class)
@@ -28,7 +30,7 @@ import tracker.entity.PersonEntity;
 @WebAppConfiguration
 @IntegrationTest
 @DirtiesContext(classMode= DirtiesContext.ClassMode.AFTER_CLASS)
-public class PersonsGetEndpointTest {
+public class WeightRecordGetEndpointTest {
 		
 	@Value("${local.server.port}")
 	private int localServerPort;
@@ -40,54 +42,56 @@ public class PersonsGetEndpointTest {
 	public void setup() {
 		PersonEntity person1 = PersonEntity.builder().name("person 1").heightInCm(160).build();
 		PersonEntity person2 = PersonEntity.builder().name("person 2").heightInCm(180).build();
+		WeightRecordEntity record1 = WeightRecordEntity.builder().person(person1).timeStamp(new Date(200)).weightInKg(80).build();
+		WeightRecordEntity record2 = WeightRecordEntity.builder().person(person1).timeStamp(new Date(300)).weightInKg(90).build();
 		
-		daoForSetup.persist(person1, person2);
+		daoForSetup.persist(person1, person2, record1, record2);
 	}
 
 	@Test
-	public void whenGetPersons_shouldReturnAllPersons() {
-		given()
-		.when()
-			.get("http://localhost:" + localServerPort + "/persons/")
-		.then()
-			.statusCode(HttpStatus.SC_OK)
-			.body("results.size", equalTo(2))
-			.body("results[0].name", equalTo("person 1"))
-			.body("results[0].heightInCm", equalTo(160))
-			.body("results[1].name", equalTo("person 2"))
-			.body("results[1].heightInCm", equalTo(180))
-		;
-	}
-	
-	@Test
-	public void whenGetPersonById_shouldReturnCorrectPerson() {
+	public void whenGetWeightRecords_shouldReturnAllWeightRecordsForPerson() {
 		List<PersonEntity> persons = daoForSetup.getPersons();
 		
 		given()
 		.when()
-			.get("http://localhost:" + localServerPort + "/persons/" + persons.get(0).getId())
+			.get("http://localhost:" + localServerPort + "/weightRecords/" + persons.get(0).getId())
 		.then()
 			.statusCode(HttpStatus.SC_OK)
-			.body("name", equalTo("person 1"))
-			.body("heightInCm", equalTo(160))
+			.body("results.size", equalTo(2))
+			.body("results[0].timeStamp", equalTo(200))
+			.body("results[0].weightInKg", equalTo(80))
+			.body("results[1].timeStamp", equalTo(300))
+			.body("results[1].weightInKg", equalTo(90))
 		;
 	}
 	
 	@Test
-	public void whenGetPersonById_withRandomUuid_shouldReturn404() {
+	public void whenGetWeightRecords_withRandomUuid_shouldReturn404() {
 		given()
 		.when()
-			.get("http://localhost:" + localServerPort + "/persons/" + UUID.randomUUID())
+			.get("http://localhost:" + localServerPort + "/weightRecords/" + UUID.randomUUID())
 		.then()
 			.statusCode(HttpStatus.SC_NOT_FOUND)
 		;
 	}
 	
 	@Test
-	public void whenGetPersonById_withNonUuid_shouldReturn400() {
+	public void whenGetWeightRecords_forPersonWithoutRecords_shouldReturn404() {
+		List<PersonEntity> persons = daoForSetup.getPersons();
+		
 		given()
 		.when()
-			.get("http://localhost:" + localServerPort + "/persons/nonUuid")
+			.get("http://localhost:" + localServerPort + "/weightRecords/" + persons.get(1).getId())
+		.then()
+			.statusCode(HttpStatus.SC_NOT_FOUND)
+		;
+	}
+	
+	@Test
+	public void whenGetWeightRecords_withNonUuid_shouldReturn400() {
+		given()
+		.when()
+			.get("http://localhost:" + localServerPort + "/weightRecords/nonUuid")
 		.then()
 			.statusCode(HttpStatus.SC_BAD_REQUEST)
 		;

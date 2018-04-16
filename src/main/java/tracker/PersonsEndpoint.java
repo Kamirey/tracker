@@ -1,6 +1,7 @@
 package tracker;
 
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import javax.ws.rs.Consumes;
@@ -46,7 +47,7 @@ public class PersonsEndpoint {
 	
 	@RequestMapping(value="/", method=RequestMethod.GET)
 	@Produces(MediaType.APPLICATION_JSON)
-	public ResponseEntity<ImmutableMap<String, List<PersonEntity>>> getPersons() {
+	public ResponseEntity<Map<String, List<PersonEntity>>> getPersons() {
 		List<PersonEntity> personEntities = dao.getPersons();
 		return new ResponseEntity<>(ImmutableMap.of("results", personEntities), HttpStatus.OK);
 	}
