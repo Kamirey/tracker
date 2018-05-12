@@ -3,6 +3,7 @@ package tracker;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.Produces;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import jersey.repackaged.com.google.common.collect.ImmutableMap;
 import tracker.dao.TrackerDao;
+import tracker.dto.NameId;
 import tracker.dto.PersonDto;
 import tracker.entity.PersonEntity;
 import tracker.mapping.PersonDtoToEntityMapper;
@@ -49,6 +51,7 @@ public class PersonsEndpoint {
 	@Produces(MediaType.APPLICATION_JSON)
 	public ResponseEntity<Map<String, List<PersonEntity>>> getPersons() {
 		List<PersonEntity> personEntities = dao.getPersons();
+		personEntities.stream().map(person -> new NameId(person.getId(), person.getName())).collect(Collectors.toList());
 		return new ResponseEntity<>(ImmutableMap.of("results", personEntities), HttpStatus.OK);
 	}
 	
