@@ -37,7 +37,7 @@ public class PersonsPostEndpointTest {
 	
 	@Before
 	public void setup() {
-		PersonEntity person1 = PersonEntity.builder().name("person 1").heightInCm(160).build();
+		PersonEntity person1 = PersonEntity.builder().name("person 1").height(160).build();
 		daoForSetup.persist(person1);
 	}
 	
@@ -45,13 +45,13 @@ public class PersonsPostEndpointTest {
 	public void whenPostPerson_shouldCreatePerson() {
 		given()
 			.contentType("application/json")
-			.body("{\"name\":\"testName\",\"heightInCm\":\"80\"}")
+			.body("{\"name\":\"testName\",\"height\":\"80\"}")
 		.when()
 			.post("http://localhost:" + localServerPort + "/persons/")
 		.then()
 			.statusCode(HttpStatus.SC_CREATED)
 			.body("name", equalTo("testName"))
-			.body("heightInCm", equalTo(80))
+			.body("height", equalTo(80))
 		;
 	}
 	
@@ -84,13 +84,13 @@ public class PersonsPostEndpointTest {
 		
 		given()
 			.contentType("application/json")
-			.body("{\"name\":\"updatedName\",\"heightInCm\":\"200\"}")
+			.body("{\"name\":\"updatedName\",\"height\":\"200\"}")
 		.when()
 			.put("http://localhost:" + localServerPort + "/persons/" + personId)
 		.then()
 			.statusCode(HttpStatus.SC_OK)
 			.body("name", equalTo("updatedName"))
-			.body("heightInCm", equalTo(200))
+			.body("height", equalTo(200))
 		;
 	}
 	

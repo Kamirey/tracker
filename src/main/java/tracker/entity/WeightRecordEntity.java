@@ -29,8 +29,8 @@ public class WeightRecordEntity extends AbstractEntity {
 	@Column(name = "timeStamp", nullable = false)
 	private Date timeStamp;
 	
-	@Column(name = "weight_in_kg")
-	private int weightInKg;
+	@Column(name = "weight")
+	private int weight;
 	
 	@JsonIgnore
 	@ManyToOne(optional = false, fetch = FetchType.LAZY)

@@ -25,8 +25,8 @@ public class PersonEntity extends AbstractEntity {
 	@Column(name = "name", nullable = false)
 	private String name;
 	
-	@Column(name = "height_in_cm", nullable = false)
-	private int heightInCm;
+	@Column(name = "height", nullable = false)
+	private int height;
 	
 	@OneToMany(cascade=CascadeType.ALL, mappedBy="person", targetEntity = WeightRecordEntity.class)
 	private List<WeightRecordEntity> weightRecords;

@@ -40,8 +40,8 @@ public class WeightRecordPostEndpointTest {
 	
 	@Before
 	public void setup() {
-		PersonEntity person1 = PersonEntity.builder().name("person 1").heightInCm(160).build();
-		PersonEntity person2 = PersonEntity.builder().name("person 2").heightInCm(180).build();
+		PersonEntity person1 = PersonEntity.builder().name("person 1").height(160).build();
+		PersonEntity person2 = PersonEntity.builder().name("person 2").height(180).build();
 		
 		daoForSetup.persist(person1, person2);
 	}
@@ -67,7 +67,7 @@ public class WeightRecordPostEndpointTest {
 		assertEquals(1, weightRecords.size());
 		assertEquals(person, weightRecords.get(0).getPerson());
 		assertEquals(200, weightRecords.get(0).getTimeStamp().getTime());
-		assertEquals(80, weightRecords.get(0).getWeightInKg());
+		assertEquals(80, weightRecords.get(0).getWeight());
 	}
 	
 	

@@ -19,6 +19,6 @@ import tracker.entity.WeightRecordEntity;
 @Builder
 public class PersonDto {
 	@NonNull private String name;
-	private Integer heightInCm;
+	private Integer height;
 	@NonNull private List<WeightRecordEntity> weightRecords;
 }

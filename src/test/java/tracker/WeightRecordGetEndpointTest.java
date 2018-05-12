@@ -40,10 +40,10 @@ public class WeightRecordGetEndpointTest {
 	
 	@Before
 	public void setup() {
-		PersonEntity person1 = PersonEntity.builder().name("person 1").heightInCm(160).build();
-		PersonEntity person2 = PersonEntity.builder().name("person 2").heightInCm(180).build();
-		WeightRecordEntity record1 = WeightRecordEntity.builder().person(person1).timeStamp(new Date(200)).weightInKg(80).build();
-		WeightRecordEntity record2 = WeightRecordEntity.builder().person(person1).timeStamp(new Date(300)).weightInKg(90).build();
+		PersonEntity person1 = PersonEntity.builder().name("person 1").height(160).build();
+		PersonEntity person2 = PersonEntity.builder().name("person 2").height(180).build();
+		WeightRecordEntity record1 = WeightRecordEntity.builder().person(person1).timeStamp(new Date(200)).weight(80).build();
+		WeightRecordEntity record2 = WeightRecordEntity.builder().person(person1).timeStamp(new Date(300)).weight(90).build();
 		
 		daoForSetup.persist(person1, person2, record1, record2);
 	}
@@ -59,9 +59,9 @@ public class WeightRecordGetEndpointTest {
 			.statusCode(HttpStatus.SC_OK)
 			.body("results.size", equalTo(2))
 			.body("results[0].timeStamp", equalTo(200))
-			.body("results[0].weightInKg", equalTo(80))
+			.body("results[0].weight", equalTo(80))
 			.body("results[1].timeStamp", equalTo(300))
-			.body("results[1].weightInKg", equalTo(90))
+			.body("results[1].weight", equalTo(90))
 		;
 	}
 	

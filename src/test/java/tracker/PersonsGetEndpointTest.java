@@ -38,8 +38,8 @@ public class PersonsGetEndpointTest {
 	
 	@Before
 	public void setup() {
-		PersonEntity person1 = PersonEntity.builder().name("person 1").heightInCm(160).build();
-		PersonEntity person2 = PersonEntity.builder().name("person 2").heightInCm(180).build();
+		PersonEntity person1 = PersonEntity.builder().name("person 1").height(160).build();
+		PersonEntity person2 = PersonEntity.builder().name("person 2").height(180).build();
 		
 		daoForSetup.persist(person1, person2);
 	}
@@ -53,9 +53,9 @@ public class PersonsGetEndpointTest {
 			.statusCode(HttpStatus.SC_OK)
 			.body("results.size", equalTo(2))
 			.body("results[0].name", equalTo("person 1"))
-			.body("results[0].heightInCm", equalTo(160))
+			.body("results[0].height", equalTo(160))
 			.body("results[1].name", equalTo("person 2"))
-			.body("results[1].heightInCm", equalTo(180))
+			.body("results[1].height", equalTo(180))
 		;
 	}
 	
@@ -69,7 +69,7 @@ public class PersonsGetEndpointTest {
 		.then()
 			.statusCode(HttpStatus.SC_OK)
 			.body("name", equalTo("person 1"))
-			.body("heightInCm", equalTo(160))
+			.body("height", equalTo(160))
 		;
 	}
 	

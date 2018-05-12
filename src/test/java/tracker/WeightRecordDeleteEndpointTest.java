@@ -41,9 +41,9 @@ public class WeightRecordDeleteEndpointTest {
 	
 	@Before
 	public void setup() {
-		PersonEntity person1 = PersonEntity.builder().name("person 1").heightInCm(160).build();
-		WeightRecordEntity record1 = WeightRecordEntity.builder().person(person1).timeStamp(new Date(200)).weightInKg(80).build();
-		WeightRecordEntity record2 = WeightRecordEntity.builder().person(person1).timeStamp(new Date(300)).weightInKg(90).build();
+		PersonEntity person1 = PersonEntity.builder().name("person 1").height(160).build();
+		WeightRecordEntity record1 = WeightRecordEntity.builder().person(person1).timeStamp(new Date(200)).weight(80).build();
+		WeightRecordEntity record2 = WeightRecordEntity.builder().person(person1).timeStamp(new Date(300)).weight(90).build();
 		
 		daoForSetup.persist(person1, record1, record2);
 	}

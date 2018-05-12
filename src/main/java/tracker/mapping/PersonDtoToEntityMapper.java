@@ -14,12 +14,12 @@ public class PersonDtoToEntityMapper {
 		}
 		return PersonEntity.builder()
 			.name(dto.getName())
-			.heightInCm(dto.getHeightInCm())
+			.height(dto.getHeight())
 			.weightRecords(dto.getWeightRecords())
 			.build();
 	}
 
 	private boolean isValid(PersonDto dto) {
-		return dto.getName() != null && dto.getHeightInCm() != null;
+		return dto.getName() != null && dto.getHeight() != null;
 	}
 }

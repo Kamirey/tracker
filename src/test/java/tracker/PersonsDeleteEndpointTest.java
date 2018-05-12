@@ -38,7 +38,7 @@ public class PersonsDeleteEndpointTest {
 	
 	@Before
 	public void setup() {
-		PersonEntity person1 = PersonEntity.builder().name("person 1").heightInCm(160).build();
+		PersonEntity person1 = PersonEntity.builder().name("person 1").height(160).build();
 		daoForSetup.persist(person1);
 	}
 

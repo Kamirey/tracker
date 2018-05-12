@@ -16,11 +16,11 @@ public class WeightRecordDtoToEntityMapper {
 		return WeightRecordEntity.builder()
 			.timeStamp(dto.getTimeStamp())
 			.person(person)
-			.weightInKg(dto.getWeightInKg())
+			.weight(dto.getWeight())
 			.build();
 	}
 
 	private boolean isValid(WeightRecordDto dto) {
-		return dto.getTimeStamp() != null && dto.getWeightInKg() != null;
+		return dto.getTimeStamp() != null && dto.getWeight() != null;
 	}
 }
