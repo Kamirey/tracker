@@ -7,7 +7,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 import tracker.entity.WeightRecordEntity;
 
@@ -15,10 +14,9 @@ import tracker.entity.WeightRecordEntity;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-@RequiredArgsConstructor
 @Builder
 public class PersonDto {
 	@NonNull private String name;
-	private Integer height;
+	@NonNull private Integer height;
 	@NonNull private List<WeightRecordEntity> weightRecords;
 }
