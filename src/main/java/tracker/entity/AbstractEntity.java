@@ -29,7 +29,7 @@ public abstract class AbstractEntity {
 	@GenericGenerator(name = "uuidgen", strategy = "tracker.entity.UuidGenerator")
 	@GeneratedValue(generator="uuidgen")
 	@Basic(optional = false)
-    @Column(name = "id", unique=true, nullable = false)
+    @Column(name = "id", unique = true, nullable = false, columnDefinition = "BINARY(16)")
 	@Setter
 	private UUID id;
 }
