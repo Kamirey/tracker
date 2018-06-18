@@ -49,10 +49,10 @@ public class PersonsEndpoint {
 	
 	@RequestMapping(value="/", method=RequestMethod.GET)
 	@Produces(MediaType.APPLICATION_JSON)
-	public ResponseEntity<Map<String, List<PersonEntity>>> getPersons() {
+	public ResponseEntity<Map<String, List<NameId>>> getPersons() {
 		List<PersonEntity> personEntities = dao.getPersons();
-		personEntities.stream().map(person -> new NameId(person.getId(), person.getName())).collect(Collectors.toList());
-		return new ResponseEntity<>(ImmutableMap.of("results", personEntities), HttpStatus.OK);
+		List<NameId> personNameIds = personEntities.stream().map(person -> new NameId(person.getId(), person.getName())).collect(Collectors.toList());
+		return new ResponseEntity<>(ImmutableMap.of("results", personNameIds), HttpStatus.OK);
 	}
 	
 	@RequestMapping(value="/{id}", method=RequestMethod.GET)
